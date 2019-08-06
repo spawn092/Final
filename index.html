@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html >
+<head>
+    
+    <title> Products</title>
+    <link rel="stylesheet" href="/public/style.css">
+</head>
+<body>
+    <div id="root">New Product</div>
+        <label>Name</label>
+        <input id="name" type="text">
+        <br>
+        <label>Price</label>
+        <input id="price" type="number">
+        <br>
+        <label>Quantity</label>
+        <input id="quantity" type="number">
+        <br>
+        <button id="add">ADD</button>
+</body>
+<script
+src="https://code.jquery.com/jquery-3.4.1.min.js"
+integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+crossorigin="anonymous"></script>
+<script>
+    let user = {name: '', price: '', quantity: ''}
+    $('#add').click(function(){
+      user.name = $('#name').val()
+      user.email = $('#price').val()
+      user.password = $('#quantity').val()
+      $.ajax({
+        method: "POST",
+        url: '/index.html',
+        data: user
+      }).done(function(response){
+          console.log(response)
+          localStorage.setItem('token',response.token)
+          localStorage.setItem('userID',response.user._id)
+        
+      }).fail(function(response){
+        alert("Something went wrong")
+        console.log(response)
+      })
+    })
+  </script>
+
+</html>
