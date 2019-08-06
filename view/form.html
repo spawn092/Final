@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+    <title>New Product</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</head>
+
+<body>
+        <h1> New Product<span class="badge badge-secondary">New</span></h1>
+    <form id ="Form">
+        <div class="form-group">
+          <label for="title">Name
+          <input type="Title" class="form-control" id="name" placeholder="Enter Post Title">
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="text" class="form-control" id="price" placeholder="Enter Approximate reading time">
+          </div>
+        
+        
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <textarea class="form-control" id="quantity" rows="5"
+          placeholder="Enter quantity"></textarea>
+        </div>
+        
+      </form>
+      
+      
+      <button id ="postBtn1" type="button" class="btn btn-primary btn-lg">ADD</button> <br>
+      <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"></script>
+
+     <script>
+          var post = {title:"", text:"",reading_length:""};
+          $('#postBtn1').click(function(event){
+            post.title = $('#name').val();
+            post.text = $('#price').val();
+            post.reading_length= $('#quantity').val();
+            $.ajax({
+              method:"POST",
+              url:"/post/create",
+              data: post
+            }).done(function(response){
+              console.log(response);
+              window.location.replace("/article");
+            }).fail(function(response){
+              console.log(response.responseText);
+            });
+          });
+          
+        </script>
+      
+</body>

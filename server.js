@@ -1,51 +1,30 @@
 var http = require('http');
-var fs = require('fs');
-var server = http.Server(app);
-var bodyParser = require('body-parser');
-var mongoose = require("mongoose");
+var express = require('express');
+var app = express();
+var server= http.Server(app);
+var bodyParser=require ('body-parser');
 var mongo = require('mongodb');
 
-mongo.MongoClient.connect(db_url,
-    {useNewUrlParser:true}, function(err, client){
-      if(err){
-        console.log('Could not connect to MongoDB');
-      }else{
-        db = client.db('node-cw9');
-      }
-    })
-  mongoose.connect(db_url+"/");
-  mongoose.connection.on('error', function(err){
-    console.log(err);
-    console.log('Could not connect to mongodb');
-  })
+var db_url= "mongodb+srv://admin1234:admin1234@cluster0-pxexl.mongodb.net/test?retryWrites=true&w=majority"
+var db;
+var mongoose = require("mongoose");
 
-var Schema = mongoose.Schema;
-var server = http.createServer(function(req, res){
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/html');
-  fs.readFile('index.html', function(err, data){
-    if(err){
-      return console.log("File read error");
-    }
-    res.end(data);
-  });
-});
+mongoose.connect(db_url, { useNewUrlParser: true });
+mongoose.connection.on('error', function(err){
+  console.log(err);
+  console.log('Could not connect to mongodb');
+})
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}))
 
-var productSchema = new Schema({
-    name: {
-      type: String,
-      required: "Name required"
-    },
-    price: {
-      type: Number,
-    },
-    quantity: {
-        type: Number,
-    }
-  });
-  
-  var Article = mongoose.model('Article', articleSchema)
-  
+ app.get('/',function(req,res){
+     res.sendFile(__dirname+'/view/form.html')
+ })
+app.get('/article',function(req,res){
+       res.sendFile(__dirname+'/view/posts.html')
+ })
+
+require('./routes/posts-routes')(app);
 server.listen(process.env.PORT || 3000, process.env.IP || 'localhost', function(){
-    console.log('Server running');
+  console.log('Server running');
 });
